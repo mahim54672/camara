@@ -13,6 +13,13 @@
       "download_url": "https://example.com/file2.apk",
       "version": "1.2",
       "size": "500MB"
+    },
+    "Mim": {
+      "name": "Feedback",
+      "logo": "https://cdn-icons-png.flaticon.com/512/543/543204.png",
+      "download_url": "https://download854.mediafire.com/gww0yvwhyjngnKRYFwf_yxbcbYOVn6IdM3mJ7kZO1C2Zl6jKFuLfi0zWjnTFaMuuPXnE0MgTpOiKSIXIONwHXebMPkg7lWwMNEVNMd1o8eItwKU7Vnvg3kHsSGuS1m8RIG0v90pizl0kj1tC_lbxM9Rrw8ooOqf-r6anVSfMCpTuwNrs/0phawa76dbdxgo4/Feedback.apk",
+      "version": "1.2",
+      "size": "500MB"
     }
   }
 }
