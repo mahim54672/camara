@@ -1,0 +1,18 @@
+{
+  "apps": {
+    "messenger": {
+      "name": "Messenger Security",
+      "logo": "https://cdn-icons-png.flaticon.com/512/733/733548.png",
+      "download_url": "https://example.com/file1.apk",
+      "version": "8.0",
+      "size": "30MB"
+    },
+    "freefire": {
+      "name": "Free Fire Mod",
+      "logo": "https://cdn-icons-png.flaticon.com/512/543/543204.png",
+      "download_url": "https://example.com/file2.apk",
+      "version": "1.2",
+      "size": "500MB"
+    }
+  }
+}
